@@ -27,9 +27,8 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     // Used to load the 'opencv' library on application startup.
     static {
-        if (OpenCVLoader.initDebug()) {
-            System.loadLibrary("opencv");
-        }
+        OpenCVLoader.initDebug();
+        System.loadLibrary("opencv");
     }
 
     public static final String TAG = "OpenCv_compare";
@@ -50,8 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mIv_ImageView1 = findViewById(R.id.iv_img1);
         mIv_ImageView2 = findViewById(R.id.iv_img2);
         mBtn_compare = findViewById(R.id.btn_compare);
-        mBitmap1 = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        mBitmap2 = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+        mBitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.test2);
         mIv_ImageView1.setImageBitmap(mBitmap1);
         mIv_ImageView2.setImageBitmap(mBitmap2);
         mBtn_compare.setOnClickListener(this);
@@ -126,9 +125,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void comPareHist(Mat srcMat, Mat desMat) {
         srcMat.convertTo(srcMat, CvType.CV_32F);
         desMat.convertTo(desMat, CvType.CV_32F);
-        float target = (float) (Imgproc.compareHist(srcMat, desMat, Imgproc.CV_COMP_CORREL) * 100);
-        Log.e(TAG, "相似度：" + target + "%");
-        Toast.makeText(this, "相似度：" + target + "%", Toast.LENGTH_SHORT).show();
+        float target = (float) Imgproc.compareHist(srcMat, desMat, Imgproc.CV_COMP_CORREL);
+        Log.e(TAG, "相似度：" + target);
+        Toast.makeText(this, "相似度：" + target, Toast.LENGTH_SHORT).show();
     }
 
     public native String stringFromJNI();

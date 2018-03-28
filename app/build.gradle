@@ -39,4 +39,10 @@ dependencies {
     implementation project(':openCVLibrary340')
 
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
+
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.google.zxing:android-core:3.3.0'   // 二维码扫描
+
+    implementation 'com.github.yalantis:ucrop:2.2.1-native'
+    // Get power of the native code to preserve image quality (+ about 1.5 MB to an apk size)
 }

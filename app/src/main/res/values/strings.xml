@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">OpenCV_image_comparator</string>
+
+    <item name="decode" type="id" />
+    <item name="decode_failed" type="id" />
+    <item name="decode_succeeded" type="id" />
+    <item name="launch_product_query" type="id" />
+    <item name="quit" type="id" />
+    <item name="restart_preview" type="id" />
+    <item name="return_scan_result" type="id" />
+    <item name="take_picure" type="id" />
 </resources>
