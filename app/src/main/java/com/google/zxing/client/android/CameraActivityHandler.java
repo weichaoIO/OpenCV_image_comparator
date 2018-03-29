@@ -55,7 +55,7 @@ public final class CameraActivityHandler extends Handler {
 //                    scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
 //                }
 //                activity.handleDecode((Result) message.obj, barcode, scaleFactor);
-                activity.handleDecode((Float) message.obj);
+                activity.handleDecode((Integer) message.obj);
                 break;
             case R.id.decode_failed:
                 state = State.PREVIEW;

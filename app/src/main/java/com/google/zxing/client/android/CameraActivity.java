@@ -155,9 +155,7 @@ public final class CameraActivity extends BaseAppCompatActivity implements Surfa
         }
     }
 
-    public void handleDecode(float f) {
-        Log.d(TAG, "相似度：" + f);
-
+    public void handleDecode(Integer i) {
         restartPreviewAfterDelay(1000);
     }
 

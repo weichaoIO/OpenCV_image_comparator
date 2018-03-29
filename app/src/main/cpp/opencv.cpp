@@ -17,7 +17,7 @@ Java_io_weichao_opencv_MainActivity_stringFromJNI(JNIEnv *env, jobject /* this *
 
 extern "C"
 JNIEXPORT jdouble JNICALL
-Java_io_weichao_opencv_MainActivity_getPSNR(JNIEnv *env, jobject /* this */, jlong addr1,
+Java_io_weichao_opencv_util_CompareUtil_nativeComparePSNR(JNIEnv *env, jobject /* this */, jlong addr1,
                                             jlong addr2) {
     Mat &I1 = *(Mat *) addr1;
     Mat &I2 = *(Mat *) addr2;
@@ -45,7 +45,7 @@ Java_io_weichao_opencv_MainActivity_getPSNR(JNIEnv *env, jobject /* this */, jlo
 
 extern "C"
 JNIEXPORT jdouble JNICALL
-Java_io_weichao_opencv_MainActivity_getSSIM(JNIEnv *env, jobject /* this */, jlong addr1,
+Java_io_weichao_opencv_util_CompareUtil_nativeCompareSSIM(JNIEnv *env, jobject /* this */, jlong addr1,
                                             jlong addr2) {
     const double C1 = 6.5025, C2 = 58.5225;
     /***************************** INITS **********************************/
@@ -136,7 +136,7 @@ jlong calHammingDistance(Mat matSrc) {
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_io_weichao_opencv_MainActivity_getPH(JNIEnv *env, jclass, jlong addr1, jlong addr2) {
+Java_io_weichao_opencv_util_CompareUtil_nativeComparePH(JNIEnv *env, jclass, jlong addr1, jlong addr2) {
     Mat &matSrc1 = *(Mat *) addr1;
     Mat &matSrc2 = *(Mat *) addr2;
     if (!matSrc1.data || !matSrc2.data) {

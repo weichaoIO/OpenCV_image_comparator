@@ -11,13 +11,12 @@ import com.google.zxing.PlanarYUVLuminanceSource;
 import com.jsxfedu.sfyjs_android.util.BitmapUtil;
 
 import org.opencv.android.Utils;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
 
 import io.weichao.opencv.R;
+import io.weichao.opencv.util.CompareUtil;
 
 final class DecodeHandler extends Handler {
     private static final String TAG = "DecodeHandler";
@@ -51,26 +50,22 @@ final class DecodeHandler extends Handler {
     private void decode(byte[] data, int width, int height) {
         long start = System.currentTimeMillis();
         PlanarYUVLuminanceSource source = activity.getCameraManager().buildLuminanceSource(data, width, height);
-        float f = -1;
+        int i = -1;
         if (source != null) {
             Bitmap bitmap = createBitmap(source);
             Mat mat1 = new Mat();
             Mat mat2 = new Mat();
-            Mat mat11 = new Mat();
-            Mat mat22 = new Mat();
             Utils.bitmapToMat(mBitmap1, mat1);
             Utils.bitmapToMat(bitmap, mat2);
-            Imgproc.cvtColor(mat1, mat11, Imgproc.COLOR_BGR2GRAY);
-            Imgproc.cvtColor(mat2, mat22, Imgproc.COLOR_BGR2GRAY);
-            f = comPareHist(mat11, mat22);
+            i = compare(mat1, mat2);
         }
 
         Handler handler = activity.getHandler();
-        if (f != -1) {
+        if (i != -1) {
             long end = System.currentTimeMillis();
             Log.d(TAG, "Found barcode in " + (end - start) + " ms");
             if (handler != null) {
-                Message message = Message.obtain(handler, R.id.decode_succeeded, f);
+                Message message = Message.obtain(handler, R.id.decode_succeeded, i);
 //                Bundle bundle = new Bundle();
 //                bundleThumbnail(source, bundle);
 //                message.setData(bundle);
@@ -98,11 +93,25 @@ final class DecodeHandler extends Handler {
      * 比较来个矩阵的相似度
      *
      * @param srcMat
-     * @param desMat
+     * @param dstMat
      */
-    public float comPareHist(Mat srcMat, Mat desMat) {
-        srcMat.convertTo(srcMat, CvType.CV_32F);
-        desMat.convertTo(desMat, CvType.CV_32F);
-        return (float) Imgproc.compareHist(srcMat, desMat, Imgproc.CV_COMP_CORREL);
+    public int compare(Mat srcMat, Mat dstMat) {
+        if (srcMat.empty() || dstMat.empty()) {
+            return -1;
+        }
+
+        long ph = CompareUtil.comparePH(srcMat, dstMat);
+        Log.e(TAG, "【感知哈希】相似度：" + ph);
+
+        double psnr = CompareUtil.comparePSNR(srcMat, dstMat);
+        Log.e(TAG, "【峰值信噪比】相似度：" + psnr);
+
+        double ssim = CompareUtil.compareSSIM(srcMat, dstMat);
+        Log.e(TAG, "【结构相似性】相似度：" + ssim);
+
+        double hist = CompareUtil.compareHist(srcMat, dstMat);
+        Log.e(TAG, "【直方图】相似度：" + hist);
+
+        return 0;
     }
 }
