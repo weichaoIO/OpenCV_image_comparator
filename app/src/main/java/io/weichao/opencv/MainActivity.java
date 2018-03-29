@@ -52,13 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         Mat mat1 = new Mat();
         Mat mat2 = new Mat();
-        Mat mat11 = new Mat();
-        Mat mat22 = new Mat();
         Utils.bitmapToMat(mBitmap1, mat1);
         Utils.bitmapToMat(mBitmap2, mat2);
-        Imgproc.cvtColor(mat1, mat11, Imgproc.COLOR_BGR2GRAY);
-        Imgproc.cvtColor(mat2, mat22, Imgproc.COLOR_BGR2GRAY);
-        comPareHist(mat11, mat22);
+        compare(mat1, mat2);
     }
 
     /**
@@ -67,20 +63,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param srcMat
      * @param dstMat
      */
-    public void comPareHist(Mat srcMat, Mat dstMat) {
+    public void compare(Mat srcMat, Mat dstMat) {
         if (srcMat.empty() || dstMat.empty()) {
             return;
         }
 
-        double psnr = getPSNR(srcMat.getNativeObjAddr(), dstMat.getNativeObjAddr());
+        Mat phSrcMat = srcMat.clone();
+        Mat phDstMat = dstMat.clone();
+        long ph = getPH(phSrcMat.getNativeObjAddr(), phDstMat.getNativeObjAddr());
+        Log.e(TAG, "【感知哈希】相似度：" + ph);
+
+
+        Mat psnrSrcMat = srcMat.clone();
+        Mat psnrDstMat = dstMat.clone();
+        double psnr = getPSNR(psnrSrcMat.getNativeObjAddr(), psnrDstMat.getNativeObjAddr());
         Log.e(TAG, "【峰值信噪比】相似度：" + psnr);
 
-        double ssim = getSSIM(srcMat.getNativeObjAddr(), dstMat.getNativeObjAddr());
+        Mat ssimSrcMat = srcMat.clone();
+        Mat ssimDstMat = dstMat.clone();
+        double ssim = getSSIM(ssimSrcMat.getNativeObjAddr(), ssimDstMat.getNativeObjAddr());
         Log.e(TAG, "【结构相似性】相似度：" + ssim);
 
-        srcMat.convertTo(srcMat, CvType.CV_32F);
-        dstMat.convertTo(dstMat, CvType.CV_32F);
-        float hist = (float) Imgproc.compareHist(srcMat, dstMat, Imgproc.CV_COMP_CORREL);
+        Mat histSrcMat = srcMat.clone();
+        Mat histDstMat = dstMat.clone();
+        Mat graySrcMat = new Mat();
+        Mat grayDstMat = new Mat();
+        Imgproc.cvtColor(histSrcMat, graySrcMat, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.cvtColor(histDstMat, grayDstMat, Imgproc.COLOR_BGR2GRAY);
+        Mat histSrcConvertMat = new Mat();
+        Mat histDstConvertMat2 = new Mat();
+        graySrcMat.convertTo(histSrcConvertMat, CvType.CV_32F);
+        grayDstMat.convertTo(histDstConvertMat2, CvType.CV_32F);
+        float hist = (float) Imgproc.compareHist(histSrcConvertMat, histDstConvertMat2, Imgproc.CV_COMP_CORREL);
         Log.e(TAG, "【直方图】相似度：" + hist);
     }
 
@@ -89,4 +103,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public native double getPSNR(long mat1, long mat2);
 
     public native double getSSIM(long mat1, long mat2);
+
+    public native long getPH(long mat1, long mat2);
 }

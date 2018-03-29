@@ -21,6 +21,10 @@ Java_io_weichao_opencv_MainActivity_getPSNR(JNIEnv *env, jobject /* this */, jlo
                                             jlong addr2) {
     Mat &I1 = *(Mat *) addr1;
     Mat &I2 = *(Mat *) addr2;
+
+    cvtColor(I1, I1, CV_BGR2GRAY);
+    cvtColor(I2, I2, CV_BGR2GRAY);
+
     Mat s1;
     absdiff(I1, I2, s1);       // |I1 - I2|
     s1.convertTo(s1, CV_32F);  // cannot make a square on 8 bits
@@ -49,6 +53,10 @@ Java_io_weichao_opencv_MainActivity_getSSIM(JNIEnv *env, jobject /* this */, jlo
 
     Mat &i1 = *(Mat *) addr1;
     Mat &i2 = *(Mat *) addr2;
+
+    cvtColor(i1, i1, CV_BGR2GRAY);
+    cvtColor(i2, i2, CV_BGR2GRAY);
+
     Mat I1, I2;
     i1.convertTo(I1, d);            // cannot calculate on one byte large values
     i2.convertTo(I2, d);
@@ -95,4 +103,47 @@ Java_io_weichao_opencv_MainActivity_getSSIM(JNIEnv *env, jobject /* this */, jlo
     Scalar mssim = mean(ssim_map);   // mssim = average of ssim map
 
     return mssim.val[0] + mssim.val[1] + mssim.val[2];
+}
+
+jlong calHammingDistance(Mat matSrc) {
+    Mat matDst;
+    resize(matSrc, matDst, Size(8, 8), 0, 0, INTER_CUBIC);
+    cvtColor(matDst, matDst, CV_BGR2GRAY);
+
+    int iAvg = 0;
+    int arr[64];
+    for (int i = 0; i < 8; i++) {
+        uchar *data1 = matDst.ptr<uchar>(i);
+        int tmp = i * 8;
+        for (int j = 0; j < 8; j++) {
+            int tmp1 = tmp + j;
+            arr[tmp1] = data1[j] / 4 * 4;
+            iAvg += arr[tmp1];
+        }
+    }
+    iAvg /= 64;
+
+    int p = 1;
+    jlong value = 0;
+    for (int i = 0; i < 64; i++) {
+        p *= 2;
+        if (arr[i] >= iAvg) {
+            value += p;
+        }
+    }
+    return value;
+}
+
+extern "C"
+JNIEXPORT jlong JNICALL
+Java_io_weichao_opencv_MainActivity_getPH(JNIEnv *env, jclass, jlong addr1, jlong addr2) {
+    Mat &matSrc1 = *(Mat *) addr1;
+    Mat &matSrc2 = *(Mat *) addr2;
+    if (!matSrc1.data || !matSrc2.data) {
+        return 0j;
+    }
+
+    jlong value1 = calHammingDistance(matSrc1);
+    jlong value2 = calHammingDistance(matSrc2);
+    return value1 - value2;
 }
