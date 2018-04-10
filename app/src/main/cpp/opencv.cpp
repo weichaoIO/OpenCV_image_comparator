@@ -17,8 +17,8 @@ Java_io_weichao_opencv_MainActivity_stringFromJNI(JNIEnv *env, jobject /* this *
 
 extern "C"
 JNIEXPORT jdouble JNICALL
-Java_io_weichao_opencv_util_CompareUtil_nativeComparePSNR(JNIEnv *env, jobject /* this */, jlong addr1,
-                                            jlong addr2) {
+Java_io_weichao_opencv_util_CompareUtil_nativeComparePSNR(JNIEnv *env, jobject /* this */,
+                                                          jlong addr1, jlong addr2) {
     Mat &I1 = *(Mat *) addr1;
     Mat &I2 = *(Mat *) addr2;
 
@@ -45,8 +45,8 @@ Java_io_weichao_opencv_util_CompareUtil_nativeComparePSNR(JNIEnv *env, jobject /
 
 extern "C"
 JNIEXPORT jdouble JNICALL
-Java_io_weichao_opencv_util_CompareUtil_nativeCompareSSIM(JNIEnv *env, jobject /* this */, jlong addr1,
-                                            jlong addr2) {
+Java_io_weichao_opencv_util_CompareUtil_nativeCompareSSIM(JNIEnv *env, jobject /* this */,
+                                                          jlong addr1, jlong addr2) {
     const double C1 = 6.5025, C2 = 58.5225;
     /***************************** INITS **********************************/
     int d = CV_32F;
@@ -105,15 +105,15 @@ Java_io_weichao_opencv_util_CompareUtil_nativeCompareSSIM(JNIEnv *env, jobject /
     return mssim.val[0] + mssim.val[1] + mssim.val[2];
 }
 
-jlong calHammingDistance(Mat matSrc) {
-    Mat matDst;
-    resize(matSrc, matDst, Size(8, 8), 0, 0, INTER_CUBIC);
-    cvtColor(matDst, matDst, CV_BGR2GRAY);
+jlong calHammingDistance(Mat srcMat) {
+    Mat dstMat;
+    resize(srcMat, dstMat, Size(8, 8), 0, 0, INTER_CUBIC);
+    cvtColor(dstMat, dstMat, CV_BGR2GRAY);
 
     int iAvg = 0;
     int arr[64];
     for (int i = 0; i < 8; i++) {
-        uchar *data1 = matDst.ptr<uchar>(i);
+        uchar *data1 = dstMat.ptr<uchar>(i);
         int tmp = i * 8;
         for (int j = 0; j < 8; j++) {
             int tmp1 = tmp + j;
@@ -136,14 +136,15 @@ jlong calHammingDistance(Mat matSrc) {
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_io_weichao_opencv_util_CompareUtil_nativeComparePH(JNIEnv *env, jclass, jlong addr1, jlong addr2) {
-    Mat &matSrc1 = *(Mat *) addr1;
-    Mat &matSrc2 = *(Mat *) addr2;
-    if (!matSrc1.data || !matSrc2.data) {
+Java_io_weichao_opencv_util_CompareUtil_nativeComparePH(JNIEnv *env, jclass, jlong addr1,
+                                                        jlong addr2) {
+    Mat &mat1 = *(Mat *) addr1;
+    Mat &mat2 = *(Mat *) addr2;
+    if (!mat1.data || !mat2.data) {
         return 0j;
     }
 
-    jlong value1 = calHammingDistance(matSrc1);
-    jlong value2 = calHammingDistance(matSrc2);
-    return value1 - value2;
+    jlong distance1 = calHammingDistance(mat1);
+    jlong distance2 = calHammingDistance(mat2);
+    return distance1 - distance2;
 }

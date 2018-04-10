@@ -16,18 +16,17 @@ import com.google.zxing.client.android.camera.CameraManager;
 import com.jsxfedu.sfyjs_android.base.BaseAppCompatActivity;
 import com.jsxfedu.sfyjs_android.util.HardwareInfoUtil;
 
-import org.opencv.android.OpenCVLoader;
-
 import java.io.IOException;
 
 import io.weichao.opencv.R;
 
 public final class CameraActivity extends BaseAppCompatActivity implements SurfaceHolder.Callback {
-    static {
-        OpenCVLoader.initDebug();
-    }
-
     private static final String TAG = "CameraActivity";
+
+//    static {
+//        OpenCVLoader.initDebug();
+//        System.loadLibrary("opencv");
+//    }
 
     public static final int PICTURE_WIDTH = 1080;
     public static final float RED_LINE_MARGIN = 1.0f / 6;

@@ -1,4 +1,4 @@
-#CMake版本信息
+# CMake版本信息
 cmake_minimum_required(VERSION 3.4.1)
 
 # 支持-std=gnu++11
@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 # 工程路径
 set(pathToProject D:/Android/workspace/OpenCV_image_comparator)
 # OpenCV-android-sdk路径
-set(pathToOpenCv D:/Android/workspace/OpenCV-android-sdk)
+set(pathToOpenCv D:/OpenCV-android-sdk)
 
 # 配置加载native依赖
 include_directories(${pathToOpenCv}/sdk/native/jni/include)

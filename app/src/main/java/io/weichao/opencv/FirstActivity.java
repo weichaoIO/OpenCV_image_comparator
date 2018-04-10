@@ -13,10 +13,17 @@ import android.view.View;
 
 import com.google.zxing.client.android.CameraActivity;
 
+import org.opencv.android.OpenCVLoader;
+
 /**
  * Created by chao.wei on 2018/3/28.
  */
 public class FirstActivity extends AppCompatActivity {
+        static {
+            OpenCVLoader.initDebug();
+            System.loadLibrary("opencv");
+        }
+
     private static final String[] PERMISSIONS = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,  // 读取存储
             Manifest.permission.WRITE_EXTERNAL_STORAGE, // 写入存储

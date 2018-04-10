@@ -10,24 +10,144 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_img1"
+            android:id="@+id/iv1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true" />
 
         <ImageView
-            android:id="@+id/iv_img2"
+            android:id="@+id/iv2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_compare"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/btn_compare_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ivs"
-        android:text="比较" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_extract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="提取" />
+
+        <Button
+            android:id="@+id/btn_compare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="比较" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/btn_compare_container"
+        android:gravity="center_vertical" />
+
+    <LinearLayout
+        android:id="@+id/btns"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_edge_canny"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="边缘canny" />
+
+            <Button
+                android:id="@+id/btn_edge_sobel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="边缘sobel" />
+
+            <Button
+                android:id="@+id/btn_edge_gaussian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="边缘gaussian" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_contours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="轮廓" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_line_hough"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="直线hough" />
+
+            <Button
+                android:id="@+id/btn_circle_hough"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="圆hough" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_corner_harris"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="角点harris" />
+
+            <Button
+                android:id="@+id/btn_cross_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="交点" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_rotate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="旋转" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_matches"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv"
+        android:adjustViewBounds="true"
+        android:background="?android:colorBackground"
+        android:visibility="gone" />
 </RelativeLayout>
