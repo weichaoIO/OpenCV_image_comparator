@@ -152,6 +152,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="二值化" />
+
+            <Button
+                android:id="@+id/btn_equalize_hist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="直方图均衡化" />
         </LinearLayout>
 
         <Button

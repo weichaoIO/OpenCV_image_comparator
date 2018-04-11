@@ -43,4 +43,20 @@ public class ProcessUtil {
         Imgproc.threshold(grayMat, thresholdMat, 50, 255, Imgproc.THRESH_BINARY);
         return thresholdMat;
     }
+
+    public static Mat equalizeHist(Mat mat) {
+        if (mat == null) {
+            Log.e(TAG, "mat == null");
+            return null;
+        }
+
+        Mat matCopy = mat.clone();
+
+        Mat grayMat = new Mat();
+        Imgproc.cvtColor(matCopy, grayMat, Imgproc.COLOR_BGR2GRAY);
+
+        Mat equalizeHistMat = new Mat();
+        Imgproc.equalizeHist(grayMat, equalizeHistMat);
+        return equalizeHistMat;
+    }
 }

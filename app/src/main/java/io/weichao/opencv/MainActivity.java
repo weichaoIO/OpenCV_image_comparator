@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Bitmap mBitmap1, mBitmap2;
     private TextView mTv;
     private ImageView mIv1, mIv2, mMatchesIv;
-    private Button mCompareBtn, mCornerHarrisBtn, mEdgeCannyBtn, mEdgeSobelBtn, mEdgeGaussianBtn, mContoursBtn, mLineHoughBtn, mCircleHoughBtn, mRotateBtn, mCrossPointBtn, mGrayBtn, mThresholdBtn, mExtractBtn;
+    private Button mCompareBtn, mCornerHarrisBtn, mEdgeCannyBtn, mEdgeSobelBtn, mEdgeGaussianBtn, mContoursBtn, mLineHoughBtn, mCircleHoughBtn, mRotateBtn, mCrossPointBtn, mGrayBtn, mThresholdBtn, mEqualizeHistBtn, mExtractBtn;
     private int mItem = 0;
 
     @Override
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCrossPointBtn = findViewById(R.id.btn_cross_point);
         mGrayBtn = findViewById(R.id.btn_gray);
         mThresholdBtn = findViewById(R.id.btn_threshold);
+        mEqualizeHistBtn = findViewById(R.id.btn_equalize_hist);
         mExtractBtn = findViewById(R.id.btn_extract);
         mIv1.setOnClickListener(this);
         mIv2.setOnClickListener(this);
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mGrayBtn.setOnClickListener(this);
         mThresholdBtn.setOnClickListener(this);
         mExtractBtn.setOnClickListener(this);
+        mEqualizeHistBtn.setOnClickListener(this);
 
         Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
         mBitmap1 = com.jsxfedu.sfyjs_android.util.BitmapUtil.createScaledBitmap(bitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, false);
@@ -158,6 +160,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case R.id.btn_threshold:
                     BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     threshold(mat2);
+                    break;
+                case R.id.btn_equalize_hist:
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
+                    equalizeHist(mat2);
                     break;
                 case R.id.btn_extract:
                     BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
@@ -367,6 +373,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Mat thresholdMat = ProcessUtil.threshold(mat);
         BitmapUtil.matToBitmap(thresholdMat, mBitmap2);
+        mIv2.setImageBitmap(mBitmap2);
+    }
+
+    private void equalizeHist(Mat mat) {
+        if (mat == null || mat.empty()) {
+            Log.e(TAG, "mat == null || mat.empty()");
+            return;
+        }
+
+        Mat equalizeHistMat = ProcessUtil.equalizeHist(mat);
+        BitmapUtil.matToBitmap(equalizeHistMat, mBitmap2);
         mIv2.setImageBitmap(mBitmap2);
     }
 
