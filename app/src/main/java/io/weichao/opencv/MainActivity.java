@@ -26,6 +26,7 @@ import io.weichao.opencv.util.EdgeUtil;
 import io.weichao.opencv.util.ExtractUtil;
 import io.weichao.opencv.util.LineUtil;
 import io.weichao.opencv.util.PointUtil;
+import io.weichao.opencv.util.ProcessUtil;
 import io.weichao.opencv.util.RotateUtil;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Bitmap mBitmap1, mBitmap2;
     private TextView mTv;
     private ImageView mIv1, mIv2, mMatchesIv;
-    private Button mCompareBtn, mCornerHarrisBtn, mEdgeCannyBtn, mEdgeSobelBtn, mEdgeGaussianBtn, mContoursBtn, mLineHoughBtn, mCircleHoughBtn, mRotateBtn, mCrossPointBtn, mExtractBtn;
+    private Button mCompareBtn, mCornerHarrisBtn, mEdgeCannyBtn, mEdgeSobelBtn, mEdgeGaussianBtn, mContoursBtn, mLineHoughBtn, mCircleHoughBtn, mRotateBtn, mCrossPointBtn, mGrayBtn, mThresholdBtn, mExtractBtn;
     private int mItem = 0;
 
     @Override
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCircleHoughBtn = findViewById(R.id.btn_circle_hough);
         mRotateBtn = findViewById(R.id.btn_rotate);
         mCrossPointBtn = findViewById(R.id.btn_cross_point);
+        mGrayBtn = findViewById(R.id.btn_gray);
+        mThresholdBtn = findViewById(R.id.btn_threshold);
         mExtractBtn = findViewById(R.id.btn_extract);
         mIv1.setOnClickListener(this);
         mIv2.setOnClickListener(this);
@@ -80,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCircleHoughBtn.setOnClickListener(this);
         mRotateBtn.setOnClickListener(this);
         mCrossPointBtn.setOnClickListener(this);
+        mGrayBtn.setOnClickListener(this);
+        mThresholdBtn.setOnClickListener(this);
         mExtractBtn.setOnClickListener(this);
 
         mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
@@ -140,6 +145,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case R.id.btn_cross_point:
                     Utils.bitmapToMat(mBitmap1, mat2);
                     crossPoint(mat2);
+                    break;
+                case R.id.btn_gray:
+                    Utils.bitmapToMat(mBitmap1, mat2);
+                    gray(mat2);
+                    break;
+                case R.id.btn_threshold:
+                    Utils.bitmapToMat(mBitmap1, mat2);
+                    threshold(mat2);
                     break;
                 case R.id.btn_extract:
                     Utils.bitmapToMat(mBitmap1, mat2);
@@ -327,6 +340,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mIv2.setImageBitmap(mBitmap2);
     }
 
+    private void gray(Mat mat) {
+        if (mat == null || mat.empty()) {
+            Log.e(TAG, "mat == null || mat.empty()");
+            return;
+        }
+
+        Mat grayMat = ProcessUtil.gray(mat);
+        BitmapUtil.matToBitmap(grayMat, mBitmap2);
+        mIv2.setImageBitmap(mBitmap2);
+    }
+
+    private void threshold(Mat mat) {
+        if (mat == null || mat.empty()) {
+            Log.e(TAG, "mat == null || mat.empty()");
+            return;
+        }
+
+        Mat thresholdMat = ProcessUtil.threshold(mat);
+        BitmapUtil.matToBitmap(thresholdMat, mBitmap2);
+        mIv2.setImageBitmap(mBitmap2);
+    }
+
     private void extract(Mat mat) {
         if (mat == null || mat.empty()) {
             Log.e(TAG, "mat == null || mat.empty()");
@@ -335,7 +370,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         LineUtil.ContourLine contourLine = LineUtil.getContourLineHough(mat);
         List<Point> contourPointList = PointUtil.getContourPointList(contourLine);
-        Mat extractMat = ExtractUtil.warpPerspective(mat, contourPointList);
+        Mat thresholdMat = ProcessUtil.threshold(mat);
+        Mat extractMat = ExtractUtil.warpPerspective(thresholdMat, contourPointList);
         BitmapUtil.matToBitmap(extractMat, mBitmap2);
         mIv2.setImageBitmap(mBitmap2);
     }

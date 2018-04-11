@@ -134,6 +134,26 @@
                 android:text="交点" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="灰度" />
+
+            <Button
+                android:id="@+id/btn_threshold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="二值化" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_rotate"
             android:layout_width="wrap_content"
