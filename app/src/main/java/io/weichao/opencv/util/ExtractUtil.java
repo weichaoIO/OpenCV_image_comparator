@@ -28,7 +28,7 @@ public class ExtractUtil {
 
     public static Mat warpPerspective(Mat mat, List<Point> contourPointList) {
         if (mat == null || mat.empty() || contourPointList == null || contourPointList.size() < 4) {
-            Log.d(TAG, "mat == null || mat.empty() || contourPointList == null || contourPointList.size() < 4");
+            Log.e(TAG, "mat == null || mat.empty() || contourPointList == null || contourPointList.size() < 4");
             return null;
         }
 

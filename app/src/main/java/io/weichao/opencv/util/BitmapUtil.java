@@ -29,4 +29,14 @@ public class BitmapUtil {
         // 将mat转换回位图
         Utils.matToBitmap(mat, bitmap);
     }
+
+    public static void bitmapToMat(Bitmap bitmap, int requestWidth, int requestHeight, Mat mat) {
+        if (mat == null || bitmap == null) {
+            Log.e(TAG, "mat == null || bitmap == null");
+            return;
+        }
+
+        Bitmap scaledBitmap = com.jsxfedu.sfyjs_android.util.BitmapUtil.createScaledBitmap(bitmap, requestWidth, requestHeight, false);
+        Utils.bitmapToMat(scaledBitmap, mat);
+    }
 }

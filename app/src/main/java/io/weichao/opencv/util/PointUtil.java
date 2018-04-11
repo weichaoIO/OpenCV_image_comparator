@@ -26,7 +26,7 @@ public class PointUtil {
 
     public static List<Point> getContourPointList(LineUtil.ContourLine contourLine) {
         if (contourLine == null) {
-            Log.d(TAG, "contourLine == null");
+            Log.e(TAG, "contourLine == null");
             return null;
         }
 
@@ -34,6 +34,11 @@ public class PointUtil {
         Point crossPoint2 = getCrossPoint(contourLine.leftLinePoints[0], contourLine.leftLinePoints[1], contourLine.topLinePoints[0], contourLine.topLinePoints[1]);
         Point crossPoint3 = getCrossPoint(contourLine.rightLinePoints[0], contourLine.rightLinePoints[1], contourLine.topLinePoints[0], contourLine.topLinePoints[1]);
         Point crossPoint4 = getCrossPoint(contourLine.rightLinePoints[0], contourLine.rightLinePoints[1], contourLine.bottomLinePoints[0], contourLine.bottomLinePoints[1]);
+        if (crossPoint1 == null || crossPoint2 == null || crossPoint3 == null || crossPoint4 == null) {
+            Log.e(TAG, "crossPoint1 == null || crossPoint2 == null || crossPoint3 == null || crossPoint4 == null");
+            return null;
+        }
+
         List<Point> pointList = new ArrayList<>();
         pointList.add(crossPoint1);
         pointList.add(crossPoint2);
@@ -44,7 +49,7 @@ public class PointUtil {
 
     public static Mat contourPointList(Mat mat, List<Point> contourPointList) {
         if (mat == null || mat.empty() || contourPointList == null) {
-            Log.d(TAG, "mat == null || mat.empty() || contourPointList == null");
+            Log.e(TAG, "mat == null || mat.empty() || contourPointList == null");
             return null;
         }
 
@@ -59,7 +64,7 @@ public class PointUtil {
 
     public static Point getCrossPoint(Point line1Point1, Point line1Point2, Point line2Point1, Point line2Point2) {
         if (line1Point1 == null || line1Point2 == null || line2Point1 == null || line2Point2 == null) {
-            Log.d(TAG, "line1Point1 == null || line1Point2 == null || line2Point1 == null || line2Point2 == null)");
+            Log.e(TAG, "line1Point1 == null || line1Point2 == null || line2Point1 == null || line2Point2 == null)");
             return null;
         }
 

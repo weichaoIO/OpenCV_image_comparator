@@ -25,7 +25,7 @@ public class EdgeUtil {
 
     public static Mat edgeCanny(Mat mat) {
         if (mat == null || mat.empty()) {
-            Log.d(TAG, "mat == null || mat.empty()");
+            Log.e(TAG, "mat == null || mat.empty()");
             return null;
         }
 
@@ -42,7 +42,7 @@ public class EdgeUtil {
 
     public static Mat edgeSobel(Mat mat) {
         if (mat == null || mat.empty()) {
-            Log.d(TAG, "mat == null || mat.empty()");
+            Log.e(TAG, "mat == null || mat.empty()");
             return null;
         }
 
@@ -72,7 +72,7 @@ public class EdgeUtil {
 
     public static Mat edgeGaussian(Mat mat) {
         if (mat == null || mat.empty()) {
-            Log.d(TAG, "mat == null || mat.empty()");
+            Log.e(TAG, "mat == null || mat.empty()");
             return null;
         }
 

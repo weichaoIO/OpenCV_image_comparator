@@ -24,7 +24,7 @@ public class CornerUtil {
 
     public static Mat cornerHarris(Mat mat) {
         if (mat == null || mat.empty()) {
-            Log.d(TAG, "mat == null || mat.empty()");
+            Log.e(TAG, "mat == null || mat.empty()");
             return null;
         }
 

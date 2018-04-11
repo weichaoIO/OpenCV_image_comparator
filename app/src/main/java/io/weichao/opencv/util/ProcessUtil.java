@@ -17,7 +17,7 @@ public class ProcessUtil {
 
     public static Mat gray(Mat mat) {
         if (mat == null) {
-            Log.d(TAG, "mat == null");
+            Log.e(TAG, "mat == null");
             return null;
         }
 
@@ -30,7 +30,7 @@ public class ProcessUtil {
 
     public static Mat threshold(Mat mat) {
         if (mat == null) {
-            Log.d(TAG, "mat == null");
+            Log.e(TAG, "mat == null");
             return null;
         }
 

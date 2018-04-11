@@ -40,7 +40,7 @@ public class CompareUtil {
 
     public static double comparePSNR(Mat mat1, Mat mat2) {
         if (mat1.empty() || mat2.empty()) {
-            Log.d(TAG, "mat1.empty() || mat2.empty()");
+            Log.e(TAG, "mat1.empty() || mat2.empty()");
             return -1;
         }
 
@@ -51,7 +51,7 @@ public class CompareUtil {
 
     public static double compareSSIM(Mat mat1, Mat mat2) {
         if (mat1.empty() || mat2.empty()) {
-            Log.d(TAG, "mat1.empty() || mat2.empty()");
+            Log.e(TAG, "mat1.empty() || mat2.empty()");
             return -1;
         }
 
@@ -62,7 +62,7 @@ public class CompareUtil {
 
     public static long comparePH(Mat mat1, Mat mat2) {
         if (mat1.empty() || mat2.empty()) {
-            Log.d(TAG, "mat1.empty() || mat2.empty()");
+            Log.e(TAG, "mat1.empty() || mat2.empty()");
             return -1;
         }
 
@@ -73,7 +73,7 @@ public class CompareUtil {
 
     public static double compareHist(Mat mat1, Mat mat2) {
         if (mat1.empty() || mat2.empty()) {
-            Log.d(TAG, "mat1.empty() || mat2.empty()");
+            Log.e(TAG, "mat1.empty() || mat2.empty()");
             return -1;
         }
 
@@ -92,7 +92,7 @@ public class CompareUtil {
 
     public static Mat matches(Mat mat1, Mat mat2) {
         if (mat1.empty() || mat2.empty()) {
-            Log.d(TAG, "mat1.empty() || mat2.empty()");
+            Log.e(TAG, "mat1.empty() || mat2.empty()");
             return null;
         }
 

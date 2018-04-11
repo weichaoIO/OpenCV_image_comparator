@@ -24,7 +24,7 @@ public class LineUtil {
 
     public static ContourLine getContourLineHough(Mat mat) {
         if (mat == null || mat.empty()) {
-            Log.d(TAG, "mat == null || mat.empty()");
+            Log.e(TAG, "mat == null || mat.empty()");
             return null;
         }
 
@@ -56,7 +56,7 @@ public class LineUtil {
 
     public static Mat contourLineHough(Mat mat, ContourLine contourLine) {
         if (mat == null || mat.empty() || contourLine == null) {
-            Log.d(TAG, "mat == null || mat.empty() || contourLine == null");
+            Log.e(TAG, "mat == null || mat.empty() || contourLine == null");
             return null;
         }
 

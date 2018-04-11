@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 
@@ -36,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        OpenCVLoader.initDebug();
 //        System.loadLibrary("opencv");
 //    }
+
+    private static final int REQUEST_WIDTH = 960;// 该值能压缩到多低取决于边框线有多粗
+    private static final int REQUEST_HEIGHT = REQUEST_WIDTH;
 
     private Bitmap mBitmap1, mBitmap2;
     private TextView mTv;
@@ -87,10 +89,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mThresholdBtn.setOnClickListener(this);
         mExtractBtn.setOnClickListener(this);
 
-        mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+        Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+        mBitmap1 = com.jsxfedu.sfyjs_android.util.BitmapUtil.createScaledBitmap(bitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, false);
         mIv1.setImageBitmap(mBitmap1);
 
-        mBitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+        mBitmap2 = com.jsxfedu.sfyjs_android.util.BitmapUtil.createScaledBitmap(bitmap2, REQUEST_WIDTH, REQUEST_HEIGHT, false);
         mIv2.setImageBitmap(mBitmap2);
     }
 
@@ -101,100 +105,104 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == mIv1) {
             changeItem(++mItem);
         } else if (v == mIv2) {
-            reset();
+            resetIv2();
         } else {
+            long timeStart = System.currentTimeMillis();
             switch (v.getId()) {
                 case R.id.btn_compare:
                     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test);
-                    Utils.bitmapToMat(bitmap, mat1);
-                    Utils.bitmapToMat(mBitmap2, mat2);
+                    BitmapUtil.bitmapToMat(bitmap, REQUEST_WIDTH, REQUEST_HEIGHT, mat1);
+                    BitmapUtil.bitmapToMat(mBitmap2, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     compare(mat1, mat2);
                     break;
                 case R.id.btn_corner_harris:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     cornerHarris(mat2);
                     break;
                 case R.id.btn_edge_canny:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     edgeCanny(mat2);
                     break;
                 case R.id.btn_edge_sobel:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     edgeSobel(mat2);
                     break;
                 case R.id.btn_edge_gaussian:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     edgeGaussian(mat2);
                     break;
                 case R.id.btn_contours:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     contours(mat2);
                     break;
                 case R.id.btn_line_hough:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     lineHough(mat2);
                     break;
                 case R.id.btn_circle_hough:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     circleHough(mat2);
                     break;
                 case R.id.btn_rotate:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     rotate(mat2);
                     break;
                 case R.id.btn_cross_point:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     crossPoint(mat2);
                     break;
                 case R.id.btn_gray:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     gray(mat2);
                     break;
                 case R.id.btn_threshold:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     threshold(mat2);
                     break;
                 case R.id.btn_extract:
-                    Utils.bitmapToMat(mBitmap1, mat2);
+                    BitmapUtil.bitmapToMat(mBitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, mat2);
                     extract(mat2);
                     break;
                 case R.id.iv_matches:
                     mMatchesIv.setVisibility(View.GONE);
                     break;
             }
+            long timeEnd = System.currentTimeMillis();
+            Log.e(TAG, "耗时: " + (timeEnd - timeStart) + " ms");
         }
     }
 
     private void changeItem(int i) {
+        Bitmap bitmap1 = null;
         switch (i % 7) {
             case 0:
-                mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+                bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
                 break;
             case 1:
-                mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test1);
+                bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test1);
                 break;
             case 2:
-                mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test2);
+                bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test2);
                 break;
             case 3:
-                mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test3);
+                bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test3);
                 break;
             case 4:
-                mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test4);
+                bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test4);
                 break;
             case 5:
-                mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test5);
+                bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test5);
                 break;
             case 6:
-                mBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test6);
+                bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.test6);
                 break;
         }
-        mBitmap2 = mBitmap1.copy(mBitmap1.getConfig(), true);
+        mBitmap1 = com.jsxfedu.sfyjs_android.util.BitmapUtil.createScaledBitmap(bitmap1, REQUEST_WIDTH, REQUEST_HEIGHT, false);
         mIv1.setImageBitmap(mBitmap1);
-        mIv2.setImageBitmap(mBitmap2);
+        resetIv2();
     }
 
-    private void reset() {
+    private void resetIv2() {
         mBitmap2 = mBitmap1.copy(mBitmap1.getConfig(), true);
         mIv2.setImageBitmap(mBitmap2);
     }

@@ -27,7 +27,7 @@ public class ContourUtil {
 
     public static Mat contours(Mat mat) {
         if (mat == null || mat.empty()) {
-            Log.d(TAG, "mat == null || mat.empty()");
+            Log.e(TAG, "mat == null || mat.empty()");
             return null;
         }
 

@@ -25,7 +25,7 @@ public class CircleUtil {
 
     public static Mat circleHough(Mat mat) {
         if (mat == null || mat.empty()) {
-            Log.d(TAG, "mat == null || mat.empty()");
+            Log.e(TAG, "mat == null || mat.empty()");
             return null;
         }
 

@@ -32,7 +32,7 @@ public class RotateUtil {
     public static Mat rotate(Mat mat) {
         RotatedRect rotatedRect = getRotatedRect(mat);
         if (mat == null || mat.empty() || rotatedRect == null) {
-            Log.d(TAG, "mat == null || mat.empty() || rotatedRect == null");
+            Log.e(TAG, "mat == null || mat.empty() || rotatedRect == null");
             return null;
         }
 
@@ -46,7 +46,7 @@ public class RotateUtil {
 
     private static RotatedRect getRotatedRect(Mat mat) {
         if (mat == null || mat.empty()) {
-            Log.d(TAG, "mat == null || mat.empty()");
+            Log.e(TAG, "mat == null || mat.empty()");
             return null;
         }
 
